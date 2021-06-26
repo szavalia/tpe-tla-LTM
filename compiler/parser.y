@@ -132,4 +132,13 @@ primary_state:
 
 %%
 
+void yyerror(char *msg) {
+    printf("\nSYNTAX ERROR!\n");
+  	exit(1);
+}
 
+
+int main () {
+    yyparse();
+    return 0;
+}   

@@ -11,8 +11,8 @@
 stringregexp      \'[^\']*\'
 varname         [A-Za-z0-9_-]+
 valnum          [+-]?([0-9]*[.])?[0-9]+
-%%
 
+%%
 
     /*variables*/
 "num"   {return INT; }
@@ -61,12 +61,8 @@ stringregexp    {
         //llamada a lo que haga salus para guardar strings
         return VALSTRING;
     }
+
 %%
-
-
-int main(){
-    yylex();
-}
 
 
 

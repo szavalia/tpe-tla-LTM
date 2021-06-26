@@ -1,10 +1,30 @@
+TARGET = compiler.out
+CC = gcc
+CFLAGS = -w
 
-default:
-	yacc -d parser.y
+SOURCES = $(wildcard *.c)
+OBJECTS := $(SOURCES:%.c=%.o)
+HEADERS = $(wildcard *.h)
+
+.PHONY: default all clean
+
+default: install $(TARGET)
+
+all: default 
+
+install: 
+	yacc parser.y -d
 	flex scanner.l
-	gcc lex.yy.c -o a.out
+
+%.o: %.c $(HEADERS)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(TARGET): $(OBJECTS)
+	$(CC) $(OBJECTS) -w -o $@
 
 clean:
-	rm -f y.tab.*
-	rm -f *.out
-	rm -f lex.yy.c
+	rm -f *.o
+	rm -f $(TARGET)
+
+uninstall:	
+	rm -f y.tab.c y.tab.h lex.yy.c
