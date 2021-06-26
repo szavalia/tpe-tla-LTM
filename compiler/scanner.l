@@ -1,5 +1,9 @@
+%option noyywrap
+
 %{
 // declaraciones en C and what not
+#include <stdio.h>
+#include <stdlib.h>
 #include "y.tab.h"
 
 %}
@@ -10,17 +14,16 @@ valnum          [+-]?([0-9]*[.])?[0-9]+
 %%
 
 
-    //palabras reservadas
+    /*variables*/
 "num"   {return INT; }
 "s"     {return STRING; }
 "if"    {return IF; }
 "fi"    {return FI; }
-"do"    {RETURN DO; }
+"do"    {return DO; }
 "ps"    {return PS; }
 "pi"    {return PI; }
 "w"     {return W; }
-
-    //operandos
+    /*operadores */
 "="     {return IGUAL; }
 "+"     {return MAS; }
 "-"     {return MENOS; }
@@ -29,20 +32,16 @@ valnum          [+-]?([0-9]*[.])?[0-9]+
 "%"     {return MODULO; }
 "["     {return ABRACKET; }
 "]"     {return CBRACKET; }
-
-    //comparaciones
+    /*comparadores*/
 "eq"    {return EQ; }
 "ne"    {return NE; }
 "lt"    {return LT; }
 "le"    {return LE; }
 "gt"    {return GT; }
 "ge"    {return GE; }
-
-
-    //caracteres nativos
-[ \t] ;     /*ignore whitespace*/
+    /*caracteres nativos*/
+[ \t]+       /*ignore whitespace*/
 \n      {return NEWLINE; }
-
 
 
 
@@ -62,6 +61,12 @@ stringregexp    {
         //llamada a lo que haga salus para guardar strings
         return VALSTRING;
     }
+%%
+
+
+int main(){
+    yylex();
+}
 
 
 
