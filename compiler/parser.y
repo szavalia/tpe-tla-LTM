@@ -2,6 +2,8 @@
 // declaraciones en C and what not
     #include <stdio.h>
     int yylex(void);
+
+    void yyerror(char *msg);
 %}
 
 %union {
@@ -41,8 +43,33 @@
 
 %%
 main_state:
-        main_state main_state
-    |   INT int_state
+        main_state content_state
+    |   content_state
+    ;
+
+int_state:
+       NAME IGUAL expression_state NEWLINE {printf("Termine con el estado int \n");}
+    |  NAME NEWLINE
+    ;
+
+string_state:
+        NAME IGUAL VALSTRING NEWLINE
+    ;
+
+if_state:
+        condition_state NEWLINE main_state FI NEWLINE
+    ;
+
+do_state:
+        NEWLINE main_state
+    ;
+
+while_state:
+        W condition_state NEWLINE
+    ;
+
+content_state:
+        INT int_state
     |   STRING string_state
     |   IF if_state
     |   DO do_state while_state
@@ -51,42 +78,18 @@ main_state:
     |   NAME IGUAL redefine_state
     ;
 
-int_state:
-        NAME IGUAL VALNUM NEWLINE
-    |   NAME IGUAL expression_state NEWLINE
-    ;
-
-string_state:
-        NAME IGUAL VALSTRING NEWLINE
-    ;
-
-if_state:
-        condition_state NEWLINE content_state FI NEWLINE
-    ;
-
-do_state:
-        NEWLINE content_state NEWLINE
-    ;
-
-while_state:
-        W condition_state NEWLINE
-    ;
-
-content_state:
-        main_state
-    ;
-
 ps_state:
         NAME NEWLINE     {/*hay que chequear que name sea una string variable*/}
+    |   VALSTRING NEWLINE
     ;
 
 pi_state:
         NAME NEWLINE
+    |   VALNUM NEWLINE    
     ;
 
 redefine_state:
-        VALNUM NEWLINE
-    |   expression_state NEWLINE
+        expression_state NEWLINE
     ;
 
 condition_state:
@@ -126,14 +129,14 @@ mul_state:
 primary_state:
         ABRACKET expression_state CBRACKET
     |   MENOS primary_state
-    |   VALNUM
+    |   VALNUM  {printf("ya me llegó y procesé el valnum \n");}
     ;
 
 
 %%
 
 void yyerror(char *msg) {
-    printf("\nSYNTAX ERROR!\n");
+    printf("\n%s\n", msg);
   	exit(1);
 }
 

@@ -8,8 +8,8 @@
 
 %}
 
-stringregexp      \'[^\']*\'
-varname         [A-Za-z0-9_-]+
+stringregexp      \'[^\']+\'
+varname         [A-Za-z_]+
 valnum          [+-]?([0-9]*[.])?[0-9]+
 
 %%
@@ -40,25 +40,26 @@ valnum          [+-]?([0-9]*[.])?[0-9]+
 "gt"    {return GT; }
 "ge"    {return GE; }
     /*caracteres nativos*/
-[ \t]+       /*ignore whitespace*/
-\n      {return NEWLINE; }
+[ \t]+     /*ignore whitespace*/
+\n      { printf("llegue al barra n \n");
+    return NEWLINE; }
 
 
 
     /*NAME*/
-varname  {
-        //llamada a lo que haga salus para guardar strings
+{varname}  {
+        printf("recibi un name \n");
         return NAME;
     }
     /*VALNUM*/
-valnum  {
-        //llamada a lo que haga salus para guardar strings
+{valnum}  {
+        printf("recibi un num \n");
         return VALNUM;
     }
 
     /*VALSTRING*/
-stringregexp    {
-        //llamada a lo que haga salus para guardar strings
+{stringregexp}    {
+        printf("recibi un string \n");
         return VALSTRING;
     }
 
