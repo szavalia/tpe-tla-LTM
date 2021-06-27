@@ -1,0 +1,44 @@
+#BNF para la gramatica del grupo LTM
+
+start ::= main_state
+
+main_state ::= main_state content_state | content_state
+
+int_state ::= NAME '=' expression_state '\\n' |   NAME '=' '\\n'
+
+string_state ::= NAME '=' valstring_state '\\n'
+
+valstring_state ::= VALSTRING
+
+bool_state ::= NAME '=' bool_values '\\n'
+
+bool_values ::= TRUE | FALSE
+
+if_state ::= condition_state '\\n' main_state '\\n' FI '\\n'
+
+do_state ::= '\\n' main_state
+
+while_state ::= 'w' condition_state '\\n'
+
+content_state ::= INT int_state | S string_state | BOOL bool_state | IF if_state | DO do_state while_state | PS ps_state | PI pi_state | NAME '=' redefine_state
+
+ps_state ::= NAME '\\n' | valstring_state '\\n'
+
+pi_state ::= NAME '\\n' | VALNUM '\\n'
+
+redefine_state ::= expression_state '\\n'
+
+condition_state ::= '[' variable_state comp_state variable_state ']' | '[' variable_state comp_state condition_state ']' | '[' condition_state comp_state variable_state ']' | '[' condition_state comp_state condition_state ']' | '[' condition_state logical_state condition_state ']'
+
+variable_state ::= NAME | VALNUM | valstring_state | TRUE | FALSE
+
+comp_state ::= EQ | NE | LT | LE | GT | GE 
+
+logical_state ::= AND | OR
+
+expression_state ::= expression_state '+' mul_state | expression_state '-' mul_state | mul_state
+
+mul_state ::= mul_state '*' primary_state | mul_state '/' primary_state | primary_state
+
+primary_state ::= '[' expression_state ']' | '-' primary_state | VALNUM | NAME
+

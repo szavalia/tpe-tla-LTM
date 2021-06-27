@@ -10,7 +10,7 @@
 
 stringregexp      \'[^\']*\'
 varname         [A-Za-z_]+
-valnum          [+-]?([0-9]*[.])?[0-9]+
+valnum          [+-]?[0-9]+
 
 %%
 
@@ -23,11 +23,11 @@ valnum          [+-]?([0-9]*[.])?[0-9]+
 "ps"    {return PS; }
 "pi"    {return PI; }
 "w"     {return W; }
-"b"     {return BOOL; }
+"b"     {printf("boolean alert\n");return BOOL; }
 
     /*estados booleanos*/
-"t"     {return TRUE; }
-"f"     {return FALSE; }
+"t"     {return TRUET; }
+"f"     {return FALSET; }
 
     /*operadores */
 "="     {return IGUAL; }
@@ -68,8 +68,10 @@ valnum          [+-]?([0-9]*[.])?[0-9]+
 
     /*VALSTRING*/
 {stringregexp}    {
-        printf("encontre el string: %s\n" ,yytext);
-        strcpy(yylval.buffer , yytext);
+        int len= strlen(yytext);
+        yytext[len -1] = 0;
+        printf("encontre el string: %s\n" ,yytext +1);
+        strcpy(yylval.buffer , yytext+1);
         printf("en el buffer deje %s\n: ", yylval.buffer);
         return VALSTRING;
     }

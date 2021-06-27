@@ -1,9 +1,6 @@
-s a = 'hola'
-s c = 'mundo'
-ps a
-ps c
 num uno = 1
-num dos = 2
-pi uno
-pi dos
-
+num dos = 0
+s amg = 'sus'
+do
+ps amg
+w [ uno gt dos ]

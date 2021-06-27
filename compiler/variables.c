@@ -31,6 +31,7 @@ int declare_variable(char * name , variable_type type){
             return FALSE;
         }
     }
+    return FALSE;
 }
 
 
@@ -52,6 +53,7 @@ int define_and_declare_variable(char * name , variable_type type){
         }
        
     }
+    return FALSE;
 }
 
 int define_variable(char * name , variable_type type ){

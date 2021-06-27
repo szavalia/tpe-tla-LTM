@@ -3,16 +3,20 @@
 #include "variables.h"
 
 typedef enum{
-    MAIN_NODE,
-    VARIABLE_NODE,
-    NUM_NODE,
-    STRING_NODE,
-    BOOLEAN_NODE,
-    PRINT_NUM_NODE,
-    PRINT_STRING_NODE,
-    DECLARE_VAR_NODE,
-    DEFINE_VAR_NODE,
-    EXPRESSION_NODE
+    MAIN_NODE = 0,
+    VARIABLE_NODE = 1,
+    NUM_NODE = 2,
+    STRING_NODE = 3,
+    BOOLEAN_NODE = 4,
+    PRINT_NUM_NODE = 5 ,
+    PRINT_STRING_NODE = 6,
+    DECLARE_VAR_NODE = 7,
+    DEFINE_VAR_NODE = 8,
+    IF_NODE = 9,
+    WHILE_NODE = 10,
+    CONDITION_STATE_NODE = 11,
+    VARIABLE_COMP_NODE = 12,
+    EXPRESSION_NODE = 13
 }node_type;
 
 typedef enum{
@@ -79,6 +83,32 @@ typedef struct print_string_node_t{
     node_type type;
     char *variable;
 }print_string_node_t;
+
+typedef struct while_node_t{
+    node_type type;
+    node_t * condition;
+    node_t * block;
+}while_node_t;
+
+typedef struct if_node_t{
+    node_type type;
+    node_t * condition;
+    node_t * block;
+}if_node_t;
+
+typedef struct condition_state_node_t{
+    node_type type;
+    char condition[2];
+    node_t * left;
+    node_t * right;
+}condition_state_node_t;
+
+typedef struct variable_comp_node_t{
+    node_type type;
+    char condition[3];
+    node_t * left;
+    node_t * right;
+}variable_comp_node_t;
 
 typedef struct expression_node_t{
     node_type type;

@@ -37,12 +37,16 @@ string_node_t * make_string_node(char * string){
     node->type = STRING_NODE;
     return node;
 }
-
+char * bool_states[] = { "true" , "false" };
 boolean_node_t * make_boolean_node(char * boolean){
     boolean_node_t * node = malloc(sizeof(boolean_node_t));
-    node->boolean=calloc(strlen(boolean)+1, sizeof(char));
-    strcpy(node->boolean, boolean);
-    node->type = BOOLEAN_NODE;
+     node->type = BOOLEAN_NODE;
+    int index = (boolean[0] == 't')? 0 : 1;
+    node->boolean=calloc(strlen(bool_states[index])+1, sizeof(char));
+    strcpy(node->boolean, bool_states[index]);
+    printf("im on a boolean\n");
+    printf("%s\n" , node->boolean);
+    printf("%ld\n" , node);
     return node;
 }
 
@@ -68,11 +72,10 @@ declare_var_node_t * make_declare_var_node(char * name , node_t * value , variab
     node->var_type = type;
     node->name = calloc(strlen(name) + 1 , sizeof(char));
     strcpy(node->name , name);
-    
     if ( value != 0 ){
         node->value = value;
     }else{
-        fprintf(strerror , "no me llego value bro\n");
+        fprintf(stderr , "no me llego value bro\n");
     }
     return node;
 }
@@ -82,6 +85,43 @@ define_var_node_t * make_define_var_node(char * name , node_t * value){
     node->name = calloc(strlen(name) + 1 , sizeof(char));
     strcpy(node->name , name);
     node->value = value;
+    return node;
+}
+
+if_node_t * make_if_node(node_t * condition , node_t * block){
+    if_node_t * node = malloc(sizeof(if_node_t));
+    node->type = IF_NODE;
+    node->condition = condition;
+    node->block = block;
+    return node;
+}
+
+
+while_node_t * make_while_node(node_t * condition , node_t * block){
+    while_node_t * node = malloc(sizeof(while_node_t));
+    node->type = WHILE_NODE;
+    node->condition = condition;
+    node->block = block;
+    return node;
+}
+condition_state_node_t * make_condition_state_node(char * condition , node_t * left , node_t * right){
+    condition_state_node_t * node = malloc(sizeof(condition_state_node_t));
+    node->type = CONDITION_STATE_NODE;
+    node->left = left;
+    node->right = right;
+    node->condition[0] = condition[0];
+    node->condition[1] = 0;
+    return node;
+}
+
+variable_comp_node_t * make_variable_comp_node( char * condition , node_t * left , node_t * right){
+    variable_comp_node_t * node = malloc(sizeof(variable_comp_node_t));
+    node->type = VARIABLE_COMP_NODE;
+    node->left = left;
+    node->right = right;
+    node->condition[0] = condition[0];
+    node->condition[1] = condition[1];
+    node->condition[2] = 0;
     return node;
 }
 
