@@ -1,8 +1,9 @@
 #ifndef _NODE_T_H
 #define _NODE_T_H
+#include "variables.h"
 
 typedef enum{
-    MAIN_NODE = 0,
+    MAIN_NODE,
     VARIABLE_NODE,
     NUM_NODE,
     STRING_NODE,
@@ -18,9 +19,6 @@ typedef struct node_t{
   node_type type;
 }node_t;
 
-
-
-
 typedef struct main_node_t{
     node_type type;
     node_t *first;
@@ -31,7 +29,7 @@ typedef struct main_node_t{
 typedef struct declare_var_node_t{
     node_type type;
     char * name;
-    //char * action;
+    variable_type var_type;
     node_t *value;
 }declare_var_node_t;
 
@@ -72,7 +70,5 @@ typedef struct print_string_node_t{
     node_type type;
     char *variable;
 }print_string_node_t;
-
-
 
 #endif

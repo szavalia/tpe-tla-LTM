@@ -1,15 +1,19 @@
 %{
 // declaraciones en C and what not
     #include <stdio.h>
+    #include "make_node.h"
+
     int yylex(void);
 
     void yyerror(char *msg);
 %}
 
 %union {
-
+    char buffer[250];
+    node_t * node;
+    node_t * root;
 }
-
+%parse-param {node_t ** root}
 %token INT
 %token STRING
 %token IF
@@ -45,19 +49,29 @@
 %token VALNUM
 %token VALSTRING
 
+
+%type <node> main_state 
+%type <node> int_state
+%type <node> string_state
+%type <node> content_state
 %%
+
+start:
+    main_state { *(root) = $1 ;}
+    ;
+
 main_state:
-        main_state content_state
-    |   content_state
+        main_state content_state { $$ = make_main_node($1 , $ 2); }
+    |   content_state  {$$ = make_main_node($1 , 0 ); }
     ;
 
 int_state:
-       NAME IGUAL expression_state NEWLINE {printf("Termine con el estado int \n");}
-    |  NAME NEWLINE
+       NAME IGUAL expression_state NEWLINE {$$ = make_define_node($1 , $3 , NUMBER);}
+    |  NAME NEWLINE {$$ = make_declare_node($1, 0 , NUMBER);}
     ;
 
 string_state:
-        NAME IGUAL VALSTRING NEWLINE
+        NAME IGUAL VALSTRING NEWLINE {$$ = make_define_node($1)}
     ;
 
 bool_state:
@@ -87,13 +101,13 @@ content_state:
     |   BOOL bool_state
     |   IF if_state
     |   DO do_state while_state
-    |   PS ps_state
+    |   PS ps_state     {$$ = $2}
     |   PI pi_state
     |   NAME IGUAL redefine_state
     ;
 
 ps_state:
-        NAME NEWLINE     {/*hay que chequear que name sea una string variable*/}
+        NAME NEWLINE     { $$ = make_print_string_state($1);}
     |   VALSTRING NEWLINE
     ;
 
@@ -103,7 +117,7 @@ pi_state:
     ;
 
 redefine_state:
-        expression_state NEWLINE 
+        expression_state NEWLINE
     ;
 
 condition_state:
@@ -145,7 +159,10 @@ mul_state:
 primary_state:
         ABRACKET expression_state CBRACKET
     |   MENOS primary_state
-    |   VALNUM  {printf("ya me llegó y procesé el valnum \n");}
+    |   VALNUM  {
+                    $$ = make_num_node($1);
+                    printf("ya me llegó y procesé el valnum \n");
+                }
     ;
 
 
@@ -158,6 +175,8 @@ void yyerror(char *msg) {
 
 
 int main () {
-    yyparse();
+    node_t * root;
+    yyparse(&root);
+    printf("%s\n" , generate_code(root));
     return 0;
 }   

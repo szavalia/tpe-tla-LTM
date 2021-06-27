@@ -8,7 +8,7 @@ HEADERS = $(wildcard *.h)
 
 .PHONY: default all clean
 
-default: install $(TARGET)
+default: $(TARGET)
 
 all: default 
 

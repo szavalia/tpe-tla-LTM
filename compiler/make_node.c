@@ -4,11 +4,11 @@
 #include <stdio.h> 
 #include <string.h>
 
-main_node_t * make_main_node(){
+main_node_t * make_main_node( node_t * first , node_t * second){
     main_node_t * node = malloc(sizeof(main_node_t));
     node->type = MAIN_NODE;
-    node->first = 0;
-    node->second = 0; 
+    node->first = first;
+    node->second = second; 
     return node;
 }
 
@@ -62,9 +62,10 @@ print_string_node_t * make_print_string_node(char * variable){
     return node;
 }
 
-declare_var_node_t * make_declare_var_node(char * name , node_t * value){
+declare_var_node_t * make_declare_var_node(char * name , node_t * value , variable_type type){
     declare_var_node_t * node = malloc(sizeof(declare_var_node_t));
     node->type = DECLARE_VAR_NODE;
+    node->var_type = type;
     node->name = calloc(strlen(name) + 1 , sizeof(char));
     strcpy(node->name , name);
     if ( value != 0 ){

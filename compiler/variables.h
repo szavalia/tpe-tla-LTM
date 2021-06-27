@@ -7,8 +7,9 @@
 #define MAX_VARIABLES 50
 
 typedef enum {
-    NUMBER = 0 ,
-    STRING = 1
+    NUMBER ,
+    STRING ,
+    BOOLEAN
 }variable_type;
 
 
