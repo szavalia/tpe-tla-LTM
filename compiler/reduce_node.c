@@ -107,27 +107,28 @@ char * reduce_declare_var_node(node_t * n ){
     else if(node->var_type == BOOLEAN){
         declaration = declarations[2];
     }
-    
+    char * buffer;
     if ( node->value == 0 ){
         declare_variable( node->name , node->var_type );
-        if( node->var_type == STRING){
-        char aux[] = "%s \\\"%s\\\";";
-        char * buffer = malloc( strlen(declaration) + 7 /*  = "" */  + strlen(node->name) + 1 );
-        sprintf(buffer , aux , declaration ,  node->name);    
-        }else{
-        char aux[] = "%s %s;";
-        char * buffer = malloc( strlen(declaration) + 4 /* = */  + strlen(node->name) + 1 );
-        sprintf(buffer , aux , declaration ,  node->name);    
-        }
+            char aux[] = "%s %s;";
+            buffer = malloc( strlen(declaration) + 4 /* = */  + strlen(node->name) + 1 );
+            sprintf(buffer , aux , declaration ,  node->name);    
      printf("<reduce declare var\n");
      return buffer; 
 
     }else{
+        //TODO AGREGAR LOS " " cuando es string
         define_and_declare_variable(node->name , node->var_type);
-        char * value = handle_reduction(node->value);
-        char aux[] = "%s %s = %s;";
-        char * buffer = malloc( strlen(declaration) + 5 /*  = */ + strlen(value) + strlen(node->name) + 1 );
-        sprintf(buffer , aux , declaration ,  node->name , value );
+            char * value = handle_reduction(node->value);
+        if ( node->var_type != STRING){
+            char aux[] = "%s %s = %s;";
+            buffer = malloc( strlen(declaration) + 5 /*  = */ + strlen(value) + strlen(node->name) + 1 );
+            sprintf(buffer , aux , declaration ,  node->name , value );    
+        }else{
+        char aux[] = "%s %s = \"%s\";";
+        buffer = malloc( strlen(declaration) + 7 /*  = "" */  + strlen(value) + strlen(node->name) + 1 );
+        sprintf(buffer , aux , declaration ,  node->name , value);    
+        }
         
      printf("<reduce declare var\n");
      return buffer; 
