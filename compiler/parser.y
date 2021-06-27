@@ -208,6 +208,7 @@ primary_state:
         ABRACKET expression_state CBRACKET { $$ = make_expression_node($2, 0, OP_NONE); }
     |   MENOS primary_state	{ $$ = make_expression_node(0, $2, OP_SUB); }
     |   VALNUM  { $$ = make_num_node($1); }
+	|	NAME	{ $$ = make_variable_node($1); }
     ;
 
 
@@ -225,8 +226,6 @@ int main () {
     char * buffer;
     generate_code(root , &buffer);
     FILE * out = fopen("./output/out.c" , "w+");
-    printf("sizeof char * : %ld", sizeof(char *));
-    printf("el buffer es %ld\n" , buffer);
     fprintf(out , "#include <stdio.h>\n");
     fprintf(out ,"int main(void){\n");
     for ( int i = 0 ; buffer[i] != 0 ; i ++){
@@ -235,6 +234,7 @@ int main () {
     fprintf(out,"\n");
     fprintf(out , "}");
     close(out);
+	
     //printf("%s\n" , generate_code(root));
     return 0;
 }   

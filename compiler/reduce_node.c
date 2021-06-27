@@ -40,9 +40,6 @@ char * reduce_main_node(node_t *n){
     
         char * buffer = malloc(strlen(value1) + strlen(value2) + 2 );
         sprintf(buffer , "%s\n%s", value1, value2);
-        printf("\n tengo en el buffer este: \n%s\n" , buffer);
-        
-        printf("el buffer es %ld\n" , buffer);
         printf("<reduce main con 2 \n");
         return buffer;
     }
@@ -163,22 +160,47 @@ char * reduce_print_string_node(node_t *n){
     return buffer;
 }
 
+static char * get_expression_value(node_t * n){
+    if(n == 0)
+        handle_error("Null!", "");
+
+    if(n->type != NUM_NODE && n->type != VARIABLE_NODE && n->type != EXPRESSION_NODE)
+        handle_error("Incompatible type in expression", "");
+
+    if(n->type == NUM_NODE){
+        return handle_reduction(n);
+    }
+    else if(n->type == VARIABLE_NODE){
+        puts("REDUCIENDO LA VARIABLE");
+        variable_node_t *node = (variable_node_t *)n;
+        if(find_variable(node->name) == NUMBER){
+            return node->name;
+        }
+        else
+            handle_error("Incompatible type in expression: ", node->name);
+    }
+    else{
+        handle_reduction(n);
+    }
+}
+
 char * reduce_expression_node(node_t *n){
     expression_node_t * node = (expression_node_t *) n;
     char *buffer, *leftBuffer, *rightBuffer, operand;
     
     //Estp puede pasar, significa que estoy haciendo -x
     if(node->left != 0)
-        leftBuffer = handle_reduction(node->left);
+        leftBuffer = get_expression_value(node->left);
     else{
         leftBuffer = malloc(1);
         *leftBuffer = '\0';
     }
+    if(node->right != 0)
+        rightBuffer = get_expression_value(node->right);
+
 
     switch(node->operation){
         case OP_NONE: //right es null
-
-            leftBuffer = handle_reduction(node->left);
             buffer = malloc(sizeof(leftBuffer) + 2 /* () */ + 1);
             sprintf(buffer, "(%s)", leftBuffer);
             return buffer;
@@ -205,7 +227,6 @@ char * reduce_expression_node(node_t *n){
         break;
     }
               
-    rightBuffer = handle_reduction(node->right);
     buffer = malloc(sizeof(leftBuffer)+ sizeof(rightBuffer) + 1 + 1);
     sprintf(buffer, "%s%c%s", leftBuffer, operand, rightBuffer);
 
@@ -215,9 +236,7 @@ char * reduce_expression_node(node_t *n){
 
 char * generate_code(node_t * root , char ** buffer){
     char * code = handle_reduction(root);
-    printf("%ld\n" , code);
     printf("%s\n" , code);
-    printf("%ld\n" , code);
     *buffer = code;
     return code;
 }
