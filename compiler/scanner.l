@@ -8,7 +8,7 @@
 #include "y.tab.h"
 %}
 
-stringregexp      \'[^\']*\'
+stringregexp      [^\']*
 varname         [A-Za-z_]+
 valnum          [+-]?([0-9]*[.])?[0-9]+
 
@@ -38,6 +38,7 @@ valnum          [+-]?([0-9]*[.])?[0-9]+
 "%"     {return MODULO; }
 "["     {return ABRACKET; }
 "]"     {return CBRACKET; }
+"'"     {return COMILLA; }
 
     /*comparadores*/
 "eq"    {return EQ; }
@@ -46,6 +47,8 @@ valnum          [+-]?([0-9]*[.])?[0-9]+
 "le"    {return LE; }
 "gt"    {return GT; }
 "ge"    {return GE; }
+"and"   {return AND; }
+"or"    {return OR; }
     /*caracteres nativos*/
 [ \t]+     /*ignore whitespace*/
 \n      { return NEWLINE; }

@@ -37,6 +37,7 @@
 %token MODULO
 %token ABRACKET
 %token CBRACKET
+%token COMILLA
 
 %token EQ
 %token NE
@@ -44,6 +45,8 @@
 %token LE
 %token GT
 %token GE
+%token AND
+%token OR
 
 %token NEWLINE
 
@@ -105,12 +108,16 @@ int_state:
     ;
 
 string_state:
-        NAME IGUAL VALSTRING NEWLINE 
+        NAME IGUAL valstring_state NEWLINE 
             {  
                 printf("en el string state\n");
                 node_t * string = make_string_node($3);
                 $$ = make_declare_var_node($1 , string , STRING );
             }
+    ;
+
+valstring_state:
+        COMILLA VALSTRING COMILLA
     ;
 
 bool_state:
@@ -147,7 +154,7 @@ content_state:
 
 ps_state:
         NAME NEWLINE     { $$ = make_print_string_node($1); }
-    |   VALSTRING NEWLINE { /* TODO: crear nodo y hacer make_print_string_node */}
+    |   valstring_state NEWLINE { /* TODO: crear nodo y hacer make_print_string_node */}
     ;
 
 pi_state:
@@ -161,15 +168,16 @@ redefine_state:
 
 condition_state:
         ABRACKET variable_state comp_state variable_state CBRACKET
-    |   ABRACKET variable_state comp_state condition_state CBRACKET
+    |   ABRACKET variable_state comp_state condition_state CBRACKET   
     |   ABRACKET condition_state comp_state variable_state CBRACKET
     |   ABRACKET condition_state comp_state condition_state CBRACKET
+    |   ABRACKET condition_state logical_state condition_state CBRACKET
     ;
 
 variable_state:
         NAME
     |   VALNUM
-    |   VALSTRING
+    |   valstring_state
     |   TRUE
     |   FALSE
     ;
@@ -183,6 +191,10 @@ comp_state:
     |   GE
     ;
 
+logical_state:
+        AND
+    |   OR
+    ;
 expression_state:
         expression_state MAS mul_state
     |   expression_state MENOS mul_state
