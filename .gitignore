@@ -41,6 +41,8 @@
 *.su
 *.idb
 *.pdb
+output/*
+test/*
 
 # Kernel Module Compile Results
 *.mod*
@@ -54,3 +56,10 @@ dkms.conf
 # YACC y LEX
 lex.yy.c
 y.tab.*
+
+#Lo del workspace
+*.json
+*.yml
+compiler/test/
+
+compiler/output/
