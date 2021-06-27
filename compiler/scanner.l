@@ -23,6 +23,12 @@ valnum          [+-]?([0-9]*[.])?[0-9]+
 "ps"    {return PS; }
 "pi"    {return PI; }
 "w"     {return W; }
+"b"     {return BOOL; }
+
+    /*estados booleanos*/
+"t"     {return TRUE; }
+"f"     {return FALSE; }
+
     /*operadores */
 "="     {return IGUAL; }
 "+"     {return MAS; }
@@ -32,6 +38,7 @@ valnum          [+-]?([0-9]*[.])?[0-9]+
 "%"     {return MODULO; }
 "["     {return ABRACKET; }
 "]"     {return CBRACKET; }
+
     /*comparadores*/
 "eq"    {return EQ; }
 "ne"    {return NE; }

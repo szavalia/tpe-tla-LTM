@@ -18,6 +18,10 @@
 %token PS
 %token PI
 %token W
+%token BOOL
+
+%token TRUE
+%token FALSE
 
 %token IGUAL
 %token MAS 
@@ -56,6 +60,15 @@ string_state:
         NAME IGUAL VALSTRING NEWLINE
     ;
 
+bool_state:
+        NAME IGUAL bool_values NEWLINE
+    ;
+
+bool_values:
+        TRUE
+    |   FALSE
+    ;
+
 if_state:
         condition_state NEWLINE main_state FI NEWLINE
     ;
@@ -71,6 +84,7 @@ while_state:
 content_state:
         INT int_state
     |   STRING string_state
+    |   BOOL bool_state
     |   IF if_state
     |   DO do_state while_state
     |   PS ps_state
