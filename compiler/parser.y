@@ -26,8 +26,8 @@
 %token W
 %token BOOL
 
-%token TRUE
-%token FALSE
+%token TRUET
+%token FALSET
 
 %token IGUAL
 %token MAS 
@@ -78,12 +78,12 @@
 %type<node> mul_state
 %type<node> primary_state
 %type<node> valstring_state
+%type<node> bool_values
 
 %type<node> variable_state
 %type<node> comp_state
 
 %type <buffer> NAME VALNUM VALSTRING
-
 
 
 
@@ -116,19 +116,19 @@ string_state:
     ;
 
 valstring_state:
-        COMILLA VALSTRING COMILLA 
+        VALSTRING 
             {
-                $$ = make_string_node($2);
+                $$ = make_string_node($1);
             }
     ;
 
 bool_state:
-        NAME IGUAL bool_values NEWLINE 
+        NAME IGUAL bool_values NEWLINE { printf("en bool state\n");$$ = make_declare_var_node($1, $3 , BOOLEAN);} 
     ;
 
-bool_values:
-        TRUE
-    |   FALSE
+bool_values:    
+        TRUET { $$ = make_boolean_node("t");}
+    |   FALSET {$$ = make_boolean_node("f");}
     ;
 
 if_state:
@@ -146,10 +146,10 @@ while_state:
 content_state:
         INT int_state { $$ = $2; }
     |   STRINGT string_state { $$ = $2; }
-    |   BOOL bool_state { $$ = test_node(); }
+    |   BOOL bool_state { $$ = $2; }
     |   IF if_state { $$ = test_node(); }
     |   DO do_state while_state { $$ = test_node(); }
-    |   PS ps_state  {$$ = $2; }
+    |   PS ps_state  { $$ = $2; }
     |   PI pi_state { $$ = $2; }
     |   NAME IGUAL redefine_state   { $$ = test_node(); }
     ;
@@ -180,8 +180,8 @@ variable_state:
         NAME
     |   VALNUM
     |   valstring_state
-    |   TRUE
-    |   FALSE
+    |   TRUET
+    |   FALSET
     ;
 
 comp_state:
@@ -233,6 +233,7 @@ int main () {
     printf("sizeof char * : %ld", sizeof(char *));
     printf("el buffer es %ld\n" , buffer);
     fprintf(out , "#include <stdio.h>\n");
+    fprintf(out , "#include <stdbool.h>\n");
     fprintf(out ,"int main(void){\n");
     for ( int i = 0 ; buffer[i] != 0 ; i ++){
         fprintf( out , "%c" , buffer[i]);

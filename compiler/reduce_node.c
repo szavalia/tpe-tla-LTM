@@ -3,8 +3,8 @@
 extern variable_t variables[];
 #include <unistd.h>
 
-char* declarations[] ={ "char *" , "double", "int" };
-
+char* declarations[] ={ "char *" , "double", "bool" };
+char amogus[]="amogus ඞ";
 static void handle_error(char *message , char * variable) {
 	fprintf(stderr, "%s%s\n\n", message , variable);
   	exit(1);
@@ -17,6 +17,9 @@ variable_type get_var_type( node_t * n){
             break;
         case STRING_NODE:
             return STRING;
+            break;
+        case BOOLEAN_NODE:
+            return BOOLEAN;
             break;
         return -1;
     }
@@ -70,6 +73,9 @@ char * reduce_string_node(node_t *n){
      printf(">reduce string\n");
 	string_node_t *node = (string_node_t *) n;
       printf("<reduce string\n");
+      if ( strcmp(node->string, "'sus'") == 0 ){
+          node->string = amogus;
+      }
     return node->string;
 }
 
@@ -157,6 +163,7 @@ char * reduce_print_string_node(node_t *n){
         handle_error("(ps) Incompatible variable type, required STRING. caused by variable :" , node->variable);
     }
 	char aux[] = "printf(\"%%s\\n\", %s);";
+   
     char * buffer = malloc(strlen(node->variable) + strlen(aux)  /*porque el %s se reemplaza por el node->variable*/);
     sprintf(buffer , aux, node->variable);
      printf("<reduce print string\n");

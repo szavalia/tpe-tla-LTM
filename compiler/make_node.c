@@ -39,11 +39,13 @@ string_node_t * make_string_node(char * string){
     //printf("el nodo que retorne es: %u\n" , node);
     return node;
 }
-
+char * bool_states[] = { "true" , "false" };
 boolean_node_t * make_boolean_node(char * boolean){
     boolean_node_t * node = malloc(sizeof(boolean_node_t));
-    node->boolean=calloc(strlen(boolean)+1, sizeof(char));
-    strcpy(node->boolean, boolean);
+    int index = (boolean[0] == 't')? 0 : 1;
+    node->boolean= boolean[index];
+    printf("im on a boolean\n");
+    printf("%s\n" , node->boolean);
     node->type = BOOLEAN_NODE;
     return node;
 }
@@ -90,6 +92,7 @@ define_var_node_t * make_define_var_node(char * name , node_t * value){
     strcpy(node->name , name);
     node->value = value;
 }
+
 
 node_t * test_node(){
     return malloc(sizeof(node_t));

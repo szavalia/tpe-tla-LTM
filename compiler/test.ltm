@@ -1,9 +1,4 @@
-s a = 'hola'
-s c = 'mundo'
+s a = 'sus'
 ps a
+s c = 'amogus ඞ'
 ps c
-num uno = 1
-num dos = 2
-pi uno
-pi dos
-

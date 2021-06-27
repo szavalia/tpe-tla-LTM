@@ -1,5 +1,6 @@
 #include <stdio.h>
+#include <stdbool.h>
 int main(void){
-char * a = "'hola'";
-printf("%s\n", a);
+char * impostor = "amogus ඞ";
+printf("%s\n", impostor);
 }
