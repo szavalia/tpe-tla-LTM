@@ -1,6 +1,6 @@
-b real = t
-b unreal = f
-s amg = 'amogus'
+num uno = 1
+num dos = 0
+s amg = 'sus'
 do
 ps amg
-w [ real ne unreal]
+w [ uno gt dos ]

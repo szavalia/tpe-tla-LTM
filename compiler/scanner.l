@@ -10,7 +10,7 @@
 
 stringregexp      \'[^\']*\'
 varname         [A-Za-z_]+
-valnum          [+-]?([0-9]*[.])?[0-9]+
+valnum          [+-]?[0-9]+
 
 %%
 

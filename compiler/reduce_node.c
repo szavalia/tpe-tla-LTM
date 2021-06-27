@@ -47,8 +47,8 @@ static char * (*reduction_functions[])(node_t *) = {
     [WHILE_NODE] = reduce_while_node
 };
 
-char* declarations[] ={ "char *" , "double", "bool" };
-char amogus[]="amogus ඞ";
+char* declarations[] ={ "char *" , "int", "bool" };
+char amogus[]="amogus_ඞ";
 static void handle_error(char *message , char * variable) {
 	fprintf(stderr, "%s%s\n\n", message , variable);
   	exit(1);
@@ -124,7 +124,7 @@ static char * reduce_string_node(node_t *n){
      printf(">reduce string\n");
 	string_node_t *node = (string_node_t *) n;
       printf("<reduce string\n");
-      if ( strcmp(node->string, "'sus'") == 0 ){
+      if ( strcmp(node->string, "sus") == 0 ){
           node->string = amogus;
       }
     return node->string;
