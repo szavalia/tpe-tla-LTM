@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <stdbool.h>
 int main(void){
-char * impostor = "amogus ඞ";
-printf("%s\n", impostor);
+bool real = true;
+bool unreal = false;
+char * amg = "amogus";
+do{
+printf("%s\n", amg);
+}while( real != unreal );
+return 0;
 }

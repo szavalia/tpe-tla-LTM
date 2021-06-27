@@ -1,6 +1,6 @@
 TARGET = compiler.out
 CC = gcc
-CFLAGS = -w
+CFLAGS = -Wall
 
 SOURCES = $(wildcard *.c)
 OBJECTS := $(SOURCES:%.c=%.o)

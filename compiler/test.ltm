@@ -1,4 +1,6 @@
-s a = 'sus'
-ps a
-s c = 'amogus ඞ'
-ps c
+b real = t
+b unreal = f
+s amg = 'amogus'
+do
+ps amg
+w [ real ne unreal]
