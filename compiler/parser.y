@@ -37,7 +37,6 @@
 %token MODULO
 %token ABRACKET
 %token CBRACKET
-%token COMILLA
 
 %token EQ
 %token NE
@@ -50,9 +49,9 @@
 
 %token NEWLINE
 
-%token NAME
-%token VALNUM
-%token VALSTRING
+%token <buffer> NAME
+%token <buffer> VALNUM
+%token <buffer> VALSTRING
 
 
 
@@ -64,7 +63,6 @@
 %type<node> int_state
 %type<node> string_state
 %type<node> bool_state
-
 %type<node> ps_state
 %type<node> pi_state
 
@@ -79,11 +77,8 @@
 %type<node> primary_state
 %type<node> valstring_state
 
-%type<node> variable_state
-%type<node> comp_state
-
-%type <buffer> NAME VALNUM VALSTRING
-
+/* %type<node> variable_state */
+/* %type<node> comp_state */
 
 
 
@@ -116,9 +111,9 @@ string_state:
     ;
 
 valstring_state:
-        COMILLA VALSTRING COMILLA 
+        VALSTRING 
             {
-                $$ = make_string_node($2);
+                $$ = make_string_node($1);
             }
     ;
 
@@ -198,20 +193,20 @@ logical_state:
     |   OR
     ;
 expression_state:
-        expression_state MAS mul_state
-    |   expression_state MENOS mul_state
+        expression_state MAS mul_state  { $$ = make_expression_node($1, $3, OP_SUM); }
+    |   expression_state MENOS mul_state{ $$ = make_expression_node($1, $3, OP_SUB); }
     |   mul_state
     ;
 
 mul_state:
-        mul_state POR primary_state
-    |   mul_state DIVIDIDO primary_state
+        mul_state POR primary_state { $$ = make_expression_node($1, $3, OP_MUL); }
+    |   mul_state DIVIDIDO primary_state { $$ = make_expression_node($1, $3, OP_DIV); }
     |   primary_state
     ;
 
 primary_state:
-        ABRACKET expression_state CBRACKET
-    |   MENOS primary_state
+        ABRACKET expression_state CBRACKET { $$ = make_expression_node($2, 0, OP_NONE); }
+    |   MENOS primary_state	{ $$ = make_expression_node(0, $2, OP_SUB); }
     |   VALNUM  { $$ = make_num_node($1); }
     ;
 

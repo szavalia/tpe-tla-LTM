@@ -16,4 +16,7 @@ print_string_node_t * make_print_string_node(char * variable);
 define_var_node_t * make_define_var_node(char * variable, node_t * value);
 
 declare_var_node_t * make_declare_var_node(char * variable, node_t * value , variable_type type);
+
+node_t * make_expression_node(node_t * left, node_t * right, operation_type type);
+
 node_t * test_node();

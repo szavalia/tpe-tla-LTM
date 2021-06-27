@@ -34,9 +34,7 @@ string_node_t * make_string_node(char * string){
     string_node_t * node = malloc(sizeof(string_node_t));
     node->string = calloc(strlen(string)+1, sizeof(char));
     strcpy(node->string, string);
-    //printf("me quedó guardado el string: %s\n");
     node->type = STRING_NODE;
-    //printf("el nodo que retorne es: %u\n" , node);
     return node;
 }
 
@@ -70,18 +68,13 @@ declare_var_node_t * make_declare_var_node(char * name , node_t * value , variab
     node->var_type = type;
     node->name = calloc(strlen(name) + 1 , sizeof(char));
     strcpy(node->name , name);
-    /*
-    printf("\n--------\ndeclarando una nueva variable\n");
-    printf("el nombres es %s\n" , name);
-    printf("el nodo value es : %u\n" , value);
-    printf("el value tiene type = %d y el que deberia es %d\n" , value->type , STRING_NODE);
-    printf("\n--------\n");*/
+    
     if ( value != 0 ){
         node->value = value;
     }else{
         fprintf(strerror , "no me llego value bro\n");
     }
-    
+    return node;
 }
 define_var_node_t * make_define_var_node(char * name , node_t * value){
     define_var_node_t * node = malloc(sizeof(define_var_node_t));
@@ -89,6 +82,16 @@ define_var_node_t * make_define_var_node(char * name , node_t * value){
     node->name = calloc(strlen(name) + 1 , sizeof(char));
     strcpy(node->name , name);
     node->value = value;
+    return node;
+}
+
+node_t * make_expression_node(node_t * left, node_t * right, operation_type optype){
+    expression_node_t * node = malloc(sizeof(expression_node_t));
+    node->type = EXPRESSION_NODE;
+    node->operation = optype;
+    node->left = left;
+    node->right = right;
+    return (node_t *)node;
 }
 
 node_t * test_node(){

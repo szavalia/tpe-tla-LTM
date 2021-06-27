@@ -113,11 +113,11 @@ char * reduce_declare_var_node(node_t * n ){
             char aux[] = "%s %s;";
             buffer = malloc( strlen(declaration) + 4 /* = */  + strlen(node->name) + 1 );
             sprintf(buffer , aux , declaration ,  node->name);    
-     printf("<reduce declare var\n");
+        printf("<reduce declare var\n");
      return buffer; 
 
     }else{
-        //TODO AGREGAR LOS " " cuando es string
+        //TODO: AGREGAR LOS " " cuando es string
         define_and_declare_variable(node->name , node->var_type);
             char * value = handle_reduction(node->value);
         if ( node->var_type != STRING){
@@ -149,7 +149,7 @@ char * reduce_define_var_node(node_t * n ){
 }
 
 char * reduce_print_string_node(node_t *n){
-     printf(">reduce print string\n");
+    printf(">reduce print string\n");
 	print_string_node_t *node = (print_string_node_t *) n;
     variable_type type = find_variable(node->variable);
     printf("viendo variables\n");
@@ -160,6 +160,55 @@ char * reduce_print_string_node(node_t *n){
     char * buffer = malloc(strlen(node->variable) + strlen(aux)  /*porque el %s se reemplaza por el node->variable*/);
     sprintf(buffer , aux, node->variable);
      printf("<reduce print string\n");
+    return buffer;
+}
+
+char * reduce_expression_node(node_t *n){
+    expression_node_t * node = (expression_node_t *) n;
+    char *buffer, *leftBuffer, *rightBuffer, operand;
+    
+    //Estp puede pasar, significa que estoy haciendo -x
+    if(node->left != 0)
+        leftBuffer = handle_reduction(node->left);
+    else{
+        leftBuffer = malloc(1);
+        *leftBuffer = '\0';
+    }
+
+    switch(node->operation){
+        case OP_NONE: //right es null
+
+            leftBuffer = handle_reduction(node->left);
+            buffer = malloc(sizeof(leftBuffer) + 2 /* () */ + 1);
+            sprintf(buffer, "(%s)", leftBuffer);
+            return buffer;
+        break;
+
+        case OP_SUB:                  
+            operand = '-';
+        break;
+        
+        case OP_SUM:
+            operand = '+';
+        break;
+        
+        case OP_MUL:
+            operand = '*';
+        break;
+
+        case OP_DIV:
+            if(*leftBuffer == '0'){
+                handle_error("División por cero", leftBuffer);
+            }
+            operand = '/';
+            
+        break;
+    }
+              
+    rightBuffer = handle_reduction(node->right);
+    buffer = malloc(sizeof(leftBuffer)+ sizeof(rightBuffer) + 1 + 1);
+    sprintf(buffer, "%s%c%s", leftBuffer, operand, rightBuffer);
+
     return buffer;
 }
 

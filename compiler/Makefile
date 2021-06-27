@@ -1,6 +1,6 @@
 TARGET = compiler.out
 CC = gcc
-CFLAGS = -w
+CFLAGS = -Wall
 
 SOURCES = $(wildcard *.c)
 OBJECTS := $(SOURCES:%.c=%.o)
@@ -20,7 +20,7 @@ install:
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(TARGET): $(OBJECTS)
-	$(CC) $(OBJECTS) -w -o $@
+	$(CC) $(OBJECTS) -o $@
 
 clean:
 	rm -f *.o
@@ -29,4 +29,4 @@ clean:
 uninstall:	
 	rm -f y.tab.c y.tab.h lex.yy.c
 
-yeet: uninstall install all
+yeet: uninstall install default
