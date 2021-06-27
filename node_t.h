@@ -2,12 +2,13 @@
 #define _NODE_T_H
 
 typedef enum{
-    MAIN_NODE = 0,
-    VARIABLE_NODE = 1,
-    NUM_NODE = 2,
-    STRING_NODE = 3,
-    PRINT_NUM_NODE = 4,
-    PRINT_STRING_NODE = 5
+    MAIN_NODE,
+    VARIABLE_NODE,
+    NUM_NODE,
+    STRING_NODE,
+    BOOLEAN_NODE,
+    PRINT_NUM_NODE,
+    PRINT_STRING_NODE
 }node_type;
 
 
@@ -36,6 +37,11 @@ typedef struct string_node_t{
     node_type type;
     char * string;
 }string_node_t;
+
+typedef struct boolean_node_t{
+    node_type type;
+    char * boolean;
+}boolean_node_t;
 
 typedef struct print_num_node_t{
     node_type type;
