@@ -117,6 +117,8 @@ variable_state:
         NAME
     |   VALNUM
     |   VALSTRING
+    |   TRUE
+    |   FALSE
     ;
 
 comp_state:
