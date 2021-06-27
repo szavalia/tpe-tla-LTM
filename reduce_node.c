@@ -1,5 +1,5 @@
 #include "reduce_node.h"
-
+#include "variables.h"
 extern variable_t variables[];
 
 static void handle_error(char *message , char * variable) {
@@ -7,6 +7,18 @@ static void handle_error(char *message , char * variable) {
   	exit(1);
 }
 
+variable_type get_var_type( node_t * n){
+    switch(n->type){
+        case: NUM_NODE
+            return NUMBER;
+            break;
+        case: STRING_NODE
+            return STRING;
+            break;
+        return -1;
+    }
+
+}
 
 char * handle_reduction(node_t *n){
     if( n == 0 ){
@@ -52,6 +64,11 @@ char * reduce_print_num_node(node_t *n){
 	char * buffer = malloc( strlen(node->variable) + strlen(aux) - 2);
 	sprintf(buffer, aux, node->variable);
 	return buffer;
+}
+    
+char * reduce_define_var_node(node_t * n ){
+    define_var_node_t * node = (define_var_node_t*) node;
+    define_variable( node->name , get_var_type(node->variable));
 }
 
 char * reduce_print_string_node(node_t *n){

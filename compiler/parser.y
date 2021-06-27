@@ -103,7 +103,7 @@ pi_state:
     ;
 
 redefine_state:
-        expression_state NEWLINE
+        expression_state NEWLINE 
     ;
 
 condition_state:

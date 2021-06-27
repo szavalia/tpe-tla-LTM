@@ -2,13 +2,15 @@
 #define _NODE_T_H
 
 typedef enum{
-    MAIN_NODE,
+    MAIN_NODE = 0,
     VARIABLE_NODE,
     NUM_NODE,
     STRING_NODE,
     BOOLEAN_NODE,
     PRINT_NUM_NODE,
-    PRINT_STRING_NODE
+    PRINT_STRING_NODE,
+    DECLARE_VAR_NODE,
+    DEFINE_VAR_NODE
 }node_type;
 
 
@@ -16,11 +18,29 @@ typedef struct node_t{
   node_type type;
 }node_t;
 
+
+
+
 typedef struct main_node_t{
     node_type type;
     node_t *first;
     node_t *second;
 }main_node_t;
+
+
+typedef struct declare_var_node_t{
+    node_type type;
+    char * name;
+    //char * action;
+    node_t *value;
+}declare_var_node_t;
+
+typedef struct define_var_node_t{
+    node_type type;
+    char * name;
+    node_t *value;
+}define_var_node_t;
+
 
 typedef struct variable_node_t{
     node_type type;

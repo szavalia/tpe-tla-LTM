@@ -30,7 +30,6 @@ num_node_t * make_num_node(char * num){
     return node;
 }
 
-
 string_node_t * make_string_node(char * string){
     string_node_t * node = malloc(sizeof(string_node_t));
     node->string = calloc(strlen(string)+1, sizeof(char));
@@ -63,7 +62,22 @@ print_string_node_t * make_print_string_node(char * variable){
     return node;
 }
 
-
+declare_var_node_t * make_declare_var_node(char * name , node_t * value){
+    declare_var_node_t * node = malloc(sizeof(declare_var_node_t));
+    node->type = DECLARE_VAR_NODE;
+    node->name = calloc(strlen(name) + 1 , sizeof(char));
+    strcpy(node->name , name);
+    if ( value != 0 ){
+        node->value = value;
+    }
+}
+define_var_node_t * make_define_var_node(char * name , node_t * value){
+    define_var_node_t * node = malloc(sizeof(define_var_node_t));
+    node->type = DEFINE_VAR_NODE;
+    node->name = calloc(strlen(name) + 1 , sizeof(char));
+    strcpy(node->name , name);
+    node->value = value;
+}
 
 int main(int argc , char ** argv){
     print_string_node_t * node = make_print_string_node(argv[1]);
