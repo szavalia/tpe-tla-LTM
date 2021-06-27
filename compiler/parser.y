@@ -77,6 +77,7 @@
 %type<node> expression_state
 %type<node> mul_state
 %type<node> primary_state
+%type<node> valstring_state
 
 %type<node> variable_state
 %type<node> comp_state
@@ -110,14 +111,15 @@ int_state:
 string_state:
         NAME IGUAL valstring_state NEWLINE 
             {  
-                printf("en el string state\n");
-                node_t * string = make_string_node($3);
-                $$ = make_declare_var_node($1 , string , STRING );
+                $$ = make_declare_var_node($1 , $3 , STRING );
             }
     ;
 
 valstring_state:
-        COMILLA VALSTRING COMILLA
+        COMILLA VALSTRING COMILLA 
+            {
+                $$ = make_string_node($2);
+            }
     ;
 
 bool_state:
