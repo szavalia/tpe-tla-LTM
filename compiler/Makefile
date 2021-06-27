@@ -14,7 +14,7 @@ all: default
 
 install: 
 	yacc parser.y -d
-	flex scanner.l
+	flex scanner.l 
 
 %.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -28,3 +28,5 @@ clean:
 
 uninstall:	
 	rm -f y.tab.c y.tab.h lex.yy.c
+
+yeet: uninstall install all

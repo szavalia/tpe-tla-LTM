@@ -19,10 +19,6 @@ static void handle_error(char *message , char * variable) {
 int declare_variable(char * name , variable_type type){
     int variable = -1;
     for(int i = 0 ; i < MAX_VARIABLES && variable == -1 ; i ++){
-        if( strcmp(variables[i].name, name) == 0 ){
-            handle_error("Variable already defined: " , name);
-            return FALSE;
-        }
         if( variables[i].name == 0){
             variable = i;
             var_count++;
@@ -30,6 +26,10 @@ int declare_variable(char * name , variable_type type){
             variables[i].declared = TRUE;
             return TRUE;
         } 
+        if( strcmp(variables[i].name, name) == 0 ){
+            handle_error("Variable already defined: " , name);
+            return FALSE;
+        }
     }
 }
 
@@ -37,11 +37,7 @@ int declare_variable(char * name , variable_type type){
 int define_and_declare_variable(char * name , variable_type type){
     int variable = -1;
     for(int i = 0 ; i < MAX_VARIABLES && variable == -1 ; i ++){
-        if( strcmp(variables[i].name, name) == 0 ){
-            handle_error("Variable already defined: " , name); //error de compilacion, variable ya definida
-            return FALSE;
-        }
-        if( variables[i].name == 0){
+         if( variables[i].name == 0){
             variable = i;
             var_count++;
             variables[i].name= name;
@@ -50,13 +46,21 @@ int define_and_declare_variable(char * name , variable_type type){
             variables[i].type = type;
             return TRUE;
         }
+        if( strcmp(variables[i].name, name) == 0 ){
+            handle_error("Variable already defined: " , name); //error de compilacion, variable ya definida
+            return FALSE;
+        }
+       
     }
 }
 
 int define_variable(char * name , variable_type type ){
     int variable = -1;
-    for( int i = 0 ; i < var_count && variable == -1 ; i++ ){
-        if(strcmp(variables[i].name , name )){
+    for( int i = 0 ; i < MAX_VARIABLES && variable == -1 ; i++ ){
+        if(variables[i].name  == 0 ){
+            handle_error("variable not found: " , name);
+        }
+        if(strcmp(variables[i].name , name ) == 0){
             if( variables[i].type != type){
                 handle_error("Incompatible variable type when assigning to: " , name );
                 //error incompatible type
@@ -72,8 +76,12 @@ int define_variable(char * name , variable_type type ){
 //SET VA CON TRUE SI QUIERO DEFINIR LA VARIABLE
 variable_type find_variable(char * name){
     int variable = -1;
-    for( int i = 0 ; i < var_count && variable == -1 ; i++ ){
-        if(strcmp(variables[i].name , name )){
+    for( int i = 0 ; i < MAX_VARIABLES && variable == -1 ; i++ ){
+        if(variables[i].name == 0 ){
+            handle_error("Variable not declared, first use of: " , name);        
+        }
+        printf("pasando por el i: %d\n" , i );
+        if(strcmp(variables[i].name , name ) == 0){
             if(!variables[i].defined){
                 handle_error("Variable declared but not defined : " , name);
                 return -1; //declared but not defined

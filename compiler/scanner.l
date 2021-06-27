@@ -4,8 +4,8 @@
 // declaraciones en C and what not
 #include <stdio.h>
 #include <stdlib.h>
+#include "node_t.h"
 #include "y.tab.h"
-
 %}
 
 stringregexp      \'[^\']*\'
@@ -16,7 +16,7 @@ valnum          [+-]?([0-9]*[.])?[0-9]+
 
     /*variables*/
 "num"   {return INT; }
-"s"     {return STRING; }
+"s"     {return STRINGT; }
 "if"    {return IF; }
 "fi"    {return FI; }
 "do"    {return DO; }
@@ -48,25 +48,27 @@ valnum          [+-]?([0-9]*[.])?[0-9]+
 "ge"    {return GE; }
     /*caracteres nativos*/
 [ \t]+     /*ignore whitespace*/
-\n      { printf("llegue al barra n \n");
-    return NEWLINE; }
+\n      { return NEWLINE; }
 
 
 
     /*NAME*/
 {varname}  {
-        printf("recibi un name \n");
+
+        strcpy(yylval.buffer , yytext);
         return NAME;
     }
     /*VALNUM*/
 {valnum}  {
-        printf("recibi un num \n");
+        strcpy(yylval.buffer , yytext);
         return VALNUM;
     }
 
     /*VALSTRING*/
 {stringregexp}    {
-        printf("recibi un string \n");
+        printf("encontre el string: %s\n" ,yytext);
+        strcpy(yylval.buffer , yytext);
+        printf("en el buffer deje %s\n: ", yylval.buffer);
         return VALSTRING;
     }
 

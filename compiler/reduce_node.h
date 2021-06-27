@@ -23,7 +23,7 @@ char * reduce_declare_var_node(node_t *n);
 
 char * reduce_define_var_node(node_t *n);
 
-char * generate_code(node_t * root);
+char * generate_code(node_t *  , char ** buffer);
 
 
 //Punteros a las funciones de reducción
