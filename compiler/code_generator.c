@@ -1,14 +1,13 @@
 #include "reduce_node.h"
+#include <unistd.h>
 
 char * generate_code(node_t * root , char ** buffer){
-    dup2(3 , 1);
-    dup2(1 , 3);
+    dup2(STDERR_FILENO , STDOUT_FILENO);
+    dup2(STDOUT_FILENO , STDERR_FILENO);
     char * code = handle_reduction(root);
-    printf("%ld\n" , code);
     printf("%s\n" , code);
-    printf("%ld\n" , code);
     *buffer = code;
-    dup2(1 , 3);
-    dup2(3 , 1);
+    dup2(STDOUT_FILENO , STDERR_FILENO);
+    dup2(STDERR_FILENO , STDOUT_FILENO);
     return code;
 }

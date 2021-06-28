@@ -89,11 +89,9 @@ static variable_type get_var_type( node_t * n){
 }
 
 char * handle_reduction(node_t *n){
-    printf("en el handle reduction\n");
     if( n == 0 ){
         handle_error("falta una hoja!" , "");
     }
-    printf("me dio de tipo %d\n" , n->type);
     return reduction_functions[n->type](n);
 }
 
@@ -164,7 +162,6 @@ static char * reduce_print_num_node(node_t *n){
 static char * reduce_declare_var_node(node_t * n ){
      printf(">reduce declare var\n");
     declare_var_node_t * node = (declare_var_node_t*) n;
-      printf("vivi\n");
     char * declaration;
     if( node->var_type == STRING){
         declaration = declarations[0];
@@ -172,12 +169,10 @@ static char * reduce_declare_var_node(node_t * n ){
         declaration = declarations[1];
     }
     else if(node->var_type == BOOLEAN){
-        printf("me dio que era una variable booleana\n");
         declaration = declarations[2];
     }
     char * buffer;
     if ( node->value == 0 ){
-        printf("no tenia value\n");
         declare_variable( node->name , node->var_type );
             char aux[] = "%s %s;";
             buffer = malloc( strlen(declaration) + 4 /* = */  + strlen(node->name) + 1 );
@@ -186,14 +181,9 @@ static char * reduce_declare_var_node(node_t * n ){
      return buffer; 
 
     }else{
-        printf("si tenia value\n");
-        printf("%ld\n" , node->value);
         define_and_declare_variable(node->name , node->var_type);
-        printf("funciono el coso de variables\n");
         char * value = handle_reduction(node->value);
-        printf("haciendo la redox\n");
         if ( node->var_type != STRING){
-            printf("no era string\n");
             char aux[] = "%s %s = %s;";
             buffer = malloc( strlen(declaration) + 5 /*  = */ + strlen(value) + strlen(node->name) + 1 );
             sprintf(buffer , aux , declaration ,  node->name , value );    
@@ -212,8 +202,6 @@ static char * reduce_declare_var_node(node_t * n ){
 static char * reduce_define_var_node(node_t * n ){
      printf(">reduce define var\n");
     define_var_node_t * node = (define_var_node_t*) n;
-    printf("i got the varible: %s" , node->name);
-
     define_variable( node->name , get_var_type(node->value));
     char * value = handle_reduction(node->value);
     char aux[] = "%s = %s;";
@@ -230,9 +218,8 @@ static char * reduce_print_string_node(node_t *n){
     if ( node->variable->type == VARIABLE_NODE){
         variable_node_t * var = (variable_node_t*) node->variable;
         variable_type type = find_variable(var->name);
-        printf("viendo variables\n");
         if( type != STRING  ){
-            handle_error("(ps) Incompatible variable type, required STRING. caused by variable :" , node->variable);
+            handle_error("(ps) Incompatible variable type, required STRING. caused by variable :" , ((variable_node_t *)node->variable)->name);
         }
         value = var->name;
         char aux[] = "printf(\"%%s\\n\", %s);";
@@ -299,6 +286,7 @@ static char * get_expression_value(node_t * n){
     else{
         handle_reduction(n);
     }
+    return NULL;
 }
 
 static char * reduce_expression_node(node_t *n){
@@ -366,6 +354,7 @@ static char * get_comp_value( node_t * n , variable_type * type){
         }
         return node->name;
     }
+    return NULL;
 }
 
 static char *reduce_variable_comp_node(node_t *n){

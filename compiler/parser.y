@@ -5,7 +5,7 @@
     #include <stdint.h>
     #include "code_generator.h"
     int yylex(void);
-    void yyerror(node_t * root , char *msg);
+    void yyerror(node_t ** root , char *msg);
     char * COMP_STATES[] = { "==" , "!=" , "<" ,"<=" , ">" ,">="};
     char * LOGICAL_OPS[] = {"&" , "|"};
 %}
@@ -40,14 +40,14 @@
 %token ABRACKET
 %token CBRACKET
 
-%token EQ
-%token NE
-%token LT
-%token LE
-%token GT
-%token GE
-%token AND
-%token OR
+%token<contidion> EQ
+%token<contidion> NE
+%token<contidion> LT
+%token<contidion> LE
+%token<contidion> GT
+%token<contidion> GE
+%token<contidion> AND
+%token<contidion> OR
 
 %token NEWLINE
 
@@ -82,7 +82,7 @@
 %type<node> variable_state
 
 
-%type <condition> AND OR EQ NE LT LE GT GE comp_state logical_state
+%type <condition> comp_state logical_state
 
 
 %%
@@ -120,8 +120,8 @@ valstring_state:
     ;
 
 bool_state:
-        NAME IGUAL bool_values NEWLINE { printf("en bool state\n");$$ =(node_t *)make_declare_var_node($1, $3 , BOOLEAN);} 
-    |   NAME IGUAL condition_state NEWLINE { printf("en condition state\n"); $$= (node_t*)make_declare_var_node($1 , $3 , BOOLEAN);}
+        NAME IGUAL bool_values NEWLINE { $$ =(node_t *)make_declare_var_node($1, $3 , BOOLEAN);} 
+    |   NAME IGUAL condition_state NEWLINE { $$= (node_t*)make_declare_var_node($1 , $3 , BOOLEAN);}
     ;
 
 bool_values:    
@@ -146,11 +146,10 @@ content_state:
     |   STRINGT string_state { $$ = $2; }
     |   BOOL bool_state { $$ = $2; }
     |   IF if_state { $$ = $2; }
-    |   DO do_state while_state { printf("vi el"); $$ = make_while_node($3 , $2); }
+    |   DO do_state while_state { $$ = make_while_node($3 , $2); }
     |   PS ps_state  { $$ = $2; }
     |   PI pi_state { $$ = $2; }
     |   NAME IGUAL redefine_state   { 
-        printf("im redifining the laws of truth\n");
         $$ = (node_t *)make_define_var_node($1, $3); }
     ;
 
@@ -161,7 +160,7 @@ ps_state:
 
 pi_state:
         NAME NEWLINE {$$ = (node_t *)make_print_num_node($1);}
-    |   VALNUM NEWLINE    
+    |   VALNUM NEWLINE 
     ;
 
 redefine_state:
@@ -176,7 +175,7 @@ condition_state:
 
 variable_state:
         NAME    {$$ = make_variable_node($1);}
-    |   VALNUM  {printf("levante num node\n"); $$ = make_num_node($1);}
+    |   VALNUM  {$$ = make_num_node($1);}
     |   valstring_state {$$ = $1;}
     |   TRUET   {$$ = make_boolean_node("t");}
     |   FALSET  {$$ = make_boolean_node("f");}
@@ -217,7 +216,7 @@ primary_state:
 
 %%
 
-void yyerror(node_t * root , char *msg) {
+void yyerror(node_t ** root , char *msg) {
     printf("\n%s\n", msg);
   	exit(1);
 }
