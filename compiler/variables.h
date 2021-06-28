@@ -20,7 +20,6 @@ typedef struct variable_t{
     int declared;
 }variable_t;
 
-variable_t variables[MAX_VARIABLES];
 
 void initialize_variables();
 

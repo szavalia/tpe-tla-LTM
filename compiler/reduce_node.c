@@ -1,6 +1,7 @@
 #include "reduce_node.h"
 #include "variables.h"
-extern variable_t variables[];
+
+
 #include <unistd.h>
 
 

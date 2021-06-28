@@ -1,10 +1,11 @@
 #include "variables.h"
 #include <stdio.h>
-
 #define FALSE 0 
 #define TRUE 1
 
 unsigned long var_count = 0;
+
+variable_t variables_ltm[MAX_VARIABLES];
 
 void initialize_variables(){
     memset(variables , 0 , sizeof(variables));
@@ -19,14 +20,14 @@ static void handle_error(char *message , char * variable) {
 int declare_variable(char * name , variable_type type){
     int variable = -1;
     for(int i = 0 ; i < MAX_VARIABLES && variable == -1 ; i ++){
-        if( variables[i].name == 0){
+        if( variables_ltm[i].name == 0){
             variable = i;
             var_count++;
-            variables[i].type = type;
-            variables[i].declared = TRUE;
+            variables_ltm[i].type = type;
+            variables_ltm[i].declared = TRUE;
             return TRUE;
         } 
-        if( strcmp(variables[i].name, name) == 0 ){
+        if( strcmp(variables_ltm[i].name, name) == 0 ){
             handle_error("Variable already defined: " , name);
             return FALSE;
         }
@@ -38,13 +39,13 @@ int declare_variable(char * name , variable_type type){
 int define_and_declare_variable(char * name , variable_type type){
     int variable = -1;
     for(int i = 0 ; i < MAX_VARIABLES && variable == -1 ; i ++){
-         if( variables[i].name == 0){
+         if( variables_ltm[i].name == 0){
             variable = i;
             var_count++;
-            variables[i].name= name;
-            variables[i].declared = FALSE;
-            variables[i].defined = TRUE;
-            variables[i].type = type;
+            variables_ltm[i].name= name;
+            variables_ltm[i].declared = FALSE;
+            variables_ltm[i].defined = TRUE;
+            variables_ltm[i].type = type;
             return TRUE;
         }
         if( strcmp(variables[i].name, name) == 0 ){
@@ -59,15 +60,15 @@ int define_and_declare_variable(char * name , variable_type type){
 int define_variable(char * name , variable_type type ){
     int variable = -1;
     for( int i = 0 ; i < MAX_VARIABLES && variable == -1 ; i++ ){
-        if(variables[i].name  == 0 ){
+        if(variables_ltm[i].name  == 0 ){
             handle_error("variable not found: " , name);
         }
-        if(strcmp(variables[i].name , name ) == 0){
-            if( variables[i].type != type){
+        if(strcmp(variables_ltm[i].name , name ) == 0){
+            if( variables_ltm[i].type != type){
                 handle_error("Incompatible variable type when assigning to: " , name );
                 //error incompatible type
             }
-            variables[i].defined = TRUE;
+            variables_ltm[i].defined = TRUE;
             return 1;
         }
     }
@@ -79,16 +80,16 @@ int define_variable(char * name , variable_type type ){
 variable_type find_variable(char * name){
     int variable = -1;
     for( int i = 0 ; i < MAX_VARIABLES && variable == -1 ; i++ ){
-        if(variables[i].name == 0 ){
+        if(variables_ltm[i].name == 0 ){
             handle_error("Variable not declared, first use of: " , name);        
         }
         printf("pasando por el i: %d\n" , i );
-        if(strcmp(variables[i].name , name ) == 0){
-            if(!variables[i].defined){
+        if(strcmp(variables_ltm[i].name , name ) == 0){
+            if(!variables_ltm[i].defined){
                 handle_error("Variable declared but not defined : " , name);
                 return -1; //declared but not defined
             }
-            return variables[i].type;
+            return variables_ltm[i].type;
         }
     }
     handle_error("Variable not declared, first use of: " , name);
