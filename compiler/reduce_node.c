@@ -97,7 +97,6 @@ char * handle_reduction(node_t *n){
 }
 
 static char * reduce_main_node(node_t *n){
-    printf(">reduce main\n");
     main_node_t *node = (main_node_t *) n;
     char * value1 = handle_reduction(node->first);
     if ( node->second != 0 ){
@@ -105,33 +104,24 @@ static char * reduce_main_node(node_t *n){
     
         char * buffer = malloc(strlen(value1) + strlen(value2) + 2 );
         sprintf(buffer , "%s\n%s", value1, value2);
-        printf("<reduce main con 2 \n");
         return buffer;
     }
-    printf("tengo en el value 1: \n%s\n" , value1);
-    printf("<reduce main con 1 \n");
     return value1;
 }
 
 static char * reduce_variable_node(node_t *n){
     variable_node_t * node = (variable_node_t *) n;
-     printf(">reduce var\n");
      find_variable(node->name);
-     printf("<reduce var\n");
     return node->name;
 }
 
 static char * reduce_num_node(node_t *n){
-     printf(">reduce num\n");
 	num_node_t *node = (num_node_t *) n;
-    printf("<reduce num\n");
     return node->number;
 }
 
 static char * reduce_string_node(node_t *n){
-     printf(">reduce string\n");
 	string_node_t *node = (string_node_t *) n;
-      printf("<reduce string\n");
       if ( strcmp(node->string, "sus") == 0 ){
           node->string = amogus;
       }
@@ -139,14 +129,11 @@ static char * reduce_string_node(node_t *n){
 }
 
 static char * reduce_boolean_node(node_t *n){
-     printf(">reduce boolean\n");
 	boolean_node_t *node = (boolean_node_t *) n;
-     printf("<reduce boolean\n");
 	return node->boolean;
 }
 
 static char * reduce_print_num_node(node_t *n){
-     printf(">reduce print num\n");
 	print_num_node_t *node = (print_num_node_t *) n;
     char * value;
     if ( node->variable->type == VARIABLE_NODE){
@@ -157,7 +144,6 @@ static char * reduce_print_num_node(node_t *n){
         }    
         value = var->name;
     }else{
-        printf("i wanted to get the type %d but i got %d\n" , EXPRESSION_NODE , node->variable->type);
         if ( get_var_type(node->variable) != NUMBER ){
             handle_error("(pi) Incompatible type, requeried NUMBER" ,"");
         }
@@ -166,12 +152,10 @@ static char * reduce_print_num_node(node_t *n){
         char aux[] = "printf(\"%%d\\n\", %s);";
         char * buffer = malloc( strlen(value) + strlen(aux) - 2);
         sprintf(buffer, aux, value );
-        printf("<reduce print num\n");
 	return buffer;
 }
 
 static char * reduce_declare_var_node(node_t * n ){
-     printf(">reduce declare var\n");
     declare_var_node_t * node = (declare_var_node_t*) n;
     char * declaration;
     if( node->var_type == STRING){
@@ -184,13 +168,10 @@ static char * reduce_declare_var_node(node_t * n ){
     }
     char * buffer;
     if ( node->value == 0 ){
-        printf("declarando una variable sin nada\n");
-        printf("node->name\n");
         declare_variable( node->name , node->var_type );
             char aux[] = "%s %s;";
             buffer = malloc( strlen(declaration) + 4 /* = */  + strlen(node->name) + 1 );
             sprintf(buffer , aux , declaration ,  node->name);    
-        printf("<reduce declare var\n");
      return buffer; 
 
     }else{
@@ -206,26 +187,22 @@ static char * reduce_declare_var_node(node_t * n ){
         sprintf(buffer , aux , declaration ,  node->name , value);    
         }
         
-     printf("<reduce declare var\n");
      return buffer; 
    
     }
 }
 
 static char * reduce_define_var_node(node_t * n ){
-     printf(">reduce define var\n");
     define_var_node_t * node = (define_var_node_t*) n;
     define_variable( node->name , get_var_type(node->value));
     char * value = handle_reduction(node->value);
     char aux[] = "%s = %s;";
     char * buffer = malloc( 3 /* = */ + strlen(value) + strlen(node->name) + 1 );
     sprintf(buffer , aux , node->name , value );
-    printf("<reduce define var\n");
     return buffer; 
 }
 
 static char * reduce_print_string_node(node_t *n){
-     printf(">reduce print string\n");
 	print_string_node_t *node = (print_string_node_t *) n;
     char * value;
     if ( node->variable->type == VARIABLE_NODE){
@@ -238,7 +215,6 @@ static char * reduce_print_string_node(node_t *n){
         char aux[] = "printf(\"%%s\\n\", %s);";
         char * buffer = malloc(strlen(value) + strlen(aux)  /*porque el %s se reemplaza por el node->variable*/);
         sprintf(buffer , aux, value);
-        printf("<reduce print string\n");
         return buffer;
     }else{
         if( get_var_type(node->variable) != STRING ){
@@ -249,7 +225,6 @@ static char * reduce_print_string_node(node_t *n){
         char * buffer = malloc(strlen(value) + strlen(aux)  /*porque el %s se reemplaza por el node->variable*/);
         sprintf(buffer , aux, value);
         
-    printf("<reduce print string\n");
         return buffer;
     }
 	
@@ -257,7 +232,6 @@ static char * reduce_print_string_node(node_t *n){
 }
 
 static char * reduce_condition_state_node(node_t *n){
-    printf(">conditon state\n");
     condition_state_node_t *node = (condition_state_node_t * ) n;
     if ( node->condition[0] == 0){
         return handle_reduction(node->left);
@@ -275,7 +249,6 @@ static char * reduce_condition_state_node(node_t *n){
     char * buffer = malloc( 6 + 1 + strlen(left) + strlen(right) );
     sprintf(buffer , aux , left , node->condition[0] , node->condition[0] , right);
     return buffer;
-    printf("<conditon state\n");
 }
 static char * get_expression_value(node_t * n){
     if(n == 0)
@@ -288,7 +261,6 @@ static char * get_expression_value(node_t * n){
         return handle_reduction(n);
     }
     else if(n->type == VARIABLE_NODE){
-        puts("REDUCIENDO LA VARIABLE");
         variable_node_t *node = (variable_node_t *)n;
         if(find_variable(node->name) == NUMBER){
             return node->name;
@@ -372,7 +344,6 @@ static char * get_comp_value( node_t * n , variable_type * type){
 }
 
 static char *reduce_variable_comp_node(node_t *n){
-    printf(">comp state\n");
     variable_comp_node_t * node = (variable_comp_node_t*) n;
     variable_type right_type;
     variable_type left_type; 
@@ -384,24 +355,20 @@ static char *reduce_variable_comp_node(node_t *n){
     char * aux = "( %s %s %s )";
     char * buffer = malloc( 5 + 1 + strlen(left) + strlen(right) );
     sprintf(buffer , aux , left , node->condition, right);
-    printf("<comp state\n");
     return buffer;
 }
 
 static char *reduce_if_node(node_t *n){
-    printf(">if reduce\n");
     if_node_t * node = (if_node_t *)n;
     char * aux="if %s{\n%s\n}";
     char * condition = handle_reduction(node->condition);
     char * block = handle_reduction(node->block);
     char * buffer = malloc(strlen(condition) + strlen(block) + 8);
     sprintf(buffer , aux , condition, block); 
-    printf("<if reduce\n");
     return buffer;
 }
 
 static char *reduce_while_node(node_t *n){
-    printf(">while reduce\n");
     if_node_t * node = (if_node_t *) n;
     char * aux="do{\n%s\n}while%s;";
     char * condition = handle_reduction(node->condition);

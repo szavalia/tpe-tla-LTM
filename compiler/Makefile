@@ -1,6 +1,6 @@
 TARGET = compiler.out
 CC = gcc
-CFLAGS = -Wall
+CFLAGS = -w
 
 SOURCES = $(wildcard *.c)
 OBJECTS := $(SOURCES:%.c=%.o)
@@ -10,7 +10,7 @@ HEADERS = $(wildcard *.h)
 
 default: $(TARGET)
 
-all: default 
+all: default
 
 install: 
 	yacc parser.y -d
@@ -28,5 +28,3 @@ clean:
 
 uninstall:	
 	rm -f y.tab.c y.tab.h lex.yy.c
-
-yeet: uninstall install default

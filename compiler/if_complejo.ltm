@@ -1,0 +1,20 @@
+num a = 10
+num c = 20
+b real = t
+b unreal = f
+
+if [ [a gt c] or [unreal ne real] ]
+    a = a mul 3
+fi
+
+ps 'variable a'
+pi a
+ps 'variable c'
+pi c
+
+unreal = real
+
+ps 'si a es mayor que c hemos jugado con la realidad'
+if [ [a gt c] or [ unreal eq real] ]
+    ps 'reality can be whatever i want'
+fi
