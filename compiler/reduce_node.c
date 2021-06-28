@@ -295,8 +295,9 @@ static char * get_expression_value(node_t * n){
             handle_error("Incompatible type in expression: ", node->name);
     }
     else{
-        handle_reduction(n);
+        return handle_reduction(n);
     }
+
     return NULL;
 }
 
