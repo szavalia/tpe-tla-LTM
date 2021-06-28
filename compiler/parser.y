@@ -40,14 +40,14 @@
 %token ABRACKET
 %token CBRACKET
 
-%token<contidion> EQ
-%token<contidion> NE
-%token<contidion> LT
-%token<contidion> LE
-%token<contidion> GT
-%token<contidion> GE
-%token<contidion> AND
-%token<contidion> OR
+%token<condition> EQ
+%token<condition> NE
+%token<condition> LT
+%token<condition> LE
+%token<condition> GT
+%token<condition> GE
+%token<condition> AND
+%token<condition> OR
 
 %token NEWLINE
 
