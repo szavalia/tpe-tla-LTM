@@ -8,7 +8,7 @@ unsigned long var_count = 0;
 variable_t variables_ltm[MAX_VARIABLES];
 
 void initialize_variables(){
-    memset(variables , 0 , sizeof(variables));
+    memset(variables_ltm , 0 , sizeof(variables));
 }
 
 
