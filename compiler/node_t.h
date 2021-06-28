@@ -81,7 +81,7 @@ typedef struct print_num_node_t{
 
 typedef struct print_string_node_t{
     node_type type;
-    char *variable;
+    node_t* variable;
 }print_string_node_t;
 
 typedef struct while_node_t{

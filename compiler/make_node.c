@@ -58,11 +58,10 @@ print_num_node_t * make_print_num_node(char * variable){
     return node;
 }
 
-print_string_node_t * make_print_string_node(char * variable){
+print_string_node_t * make_print_string_node(node_t * variable){
     print_string_node_t * node = malloc(sizeof(print_string_node_t));
     node->type = PRINT_STRING_NODE;
-    node->variable = calloc(strlen(variable)+1, sizeof(char));
-    strcpy(node->variable, variable);
+    node->variable = variable;
     return node;
 }
 

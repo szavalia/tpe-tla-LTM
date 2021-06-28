@@ -12,7 +12,7 @@ string_node_t * make_string_node(char * string);
 
 print_num_node_t * make_print_num_node(char * variable);
 
-print_string_node_t * make_print_string_node(char * variable);
+print_string_node_t * make_print_string_node(node_t * variable);
 
 define_var_node_t * make_define_var_node(char * variable, node_t * value);
 

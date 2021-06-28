@@ -146,7 +146,7 @@ content_state:
     |   STRINGT string_state { $$ = $2; }
     |   BOOL bool_state { $$ = $2; }
     |   IF if_state { $$ = $2; }
-    |   DO do_state while_state { $$ = make_while_node($3 , $2); }
+    |   DO do_state while_state { printf("vi el"); $$ = make_while_node($3 , $2); }
     |   PS ps_state  { $$ = $2; }
     |   PI pi_state { $$ = $2; }
     |   NAME IGUAL redefine_state   { 
@@ -155,8 +155,8 @@ content_state:
     ;
 
 ps_state:
-        NAME NEWLINE     { $$ = (node_t *)make_print_string_node($1); }
-    |   valstring_state NEWLINE { /* TODO: crear nodo y hacer make_print_string_node */}
+        NAME NEWLINE     { $$ = (node_t *)make_print_string_node((node_t*)make_variable_node($1)); }
+    |   valstring_state NEWLINE { $$ = (node_t*)make_print_string_node($1); }
     ;
 
 pi_state:
@@ -166,6 +166,7 @@ pi_state:
 
 redefine_state:
         VALNUM NEWLINE { $$ = (node_t *)make_num_node($1);}
+    |   expression_state NEWLINE   { $$ = $1; }
     ;
 
 condition_state:   
@@ -220,7 +221,6 @@ void yyerror(node_t * root , char *msg) {
     printf("\n%s\n", msg);
   	exit(1);
 }
-
 
 int main () {
     node_t * root;

@@ -72,6 +72,15 @@ static variable_type get_var_type( node_t * n){
         case BOOLEAN_NODE:
             return BOOLEAN;
             break;
+        case EXPRESSION_NODE:
+            return  NUMBER;
+            break;
+        case CONDITION_STATE_NODE:
+            return BOOLEAN;
+            break;
+        case VARIABLE_COMP_NODE:
+            return BOOLEAN;
+            break;
         default:
         return -1;
         break;
@@ -145,7 +154,7 @@ static char * reduce_print_num_node(node_t *n){
     if( type != NUMBER  ){
         handle_error("(pn) Incompatible variable type, required NUMBER. caused by variable :" , node->variable);
     }
-	char aux[] = "printf(\"%%f\\n\", %s);";
+	char aux[] = "printf(\"%%d\\n\", %s);";
 	char * buffer = malloc( strlen(node->variable) + strlen(aux) - 2);
 	sprintf(buffer, aux, node->variable);
     printf("<reduce print num\n");
@@ -202,8 +211,9 @@ static char * reduce_declare_var_node(node_t * n ){
 
 static char * reduce_define_var_node(node_t * n ){
      printf(">reduce define var\n");
-    define_var_node_t * node = (define_var_node_t*) node;
+    define_var_node_t * node = (define_var_node_t*) n;
     printf("i got the varible: %s" , node->name);
+
     define_variable( node->name , get_var_type(node->value));
     char * value = handle_reduction(node->value);
     char aux[] = "%s = %s;";
@@ -216,17 +226,34 @@ static char * reduce_define_var_node(node_t * n ){
 static char * reduce_print_string_node(node_t *n){
      printf(">reduce print string\n");
 	print_string_node_t *node = (print_string_node_t *) n;
-    variable_type type = find_variable(node->variable);
-    printf("viendo variables\n");
-    if( type != STRING  ){
-        handle_error("(ps) Incompatible variable type, required STRING. caused by variable :" , node->variable);
+    char * value;
+    if ( node->variable->type == VARIABLE_NODE){
+        variable_node_t * var = (variable_node_t*) node->variable;
+        variable_type type = find_variable(var->name);
+        printf("viendo variables\n");
+        if( type != STRING  ){
+            handle_error("(ps) Incompatible variable type, required STRING. caused by variable :" , node->variable);
+        }
+        value = var->name;
+        char aux[] = "printf(\"%%s\\n\", %s);";
+        char * buffer = malloc(strlen(value) + strlen(aux)  /*porque el %s se reemplaza por el node->variable*/);
+        sprintf(buffer , aux, value);
+        printf("<reduce print string\n");
+        return buffer;
+    }else{
+        if( get_var_type(node->variable) != STRING ){
+            handle_error("(ps) Error ps expects STRING type\n" , "");
+        }
+        value = handle_reduction(node->variable);
+        char aux[] = "printf(\"%s\\n\");";
+        char * buffer = malloc(strlen(value) + strlen(aux)  /*porque el %s se reemplaza por el node->variable*/);
+        sprintf(buffer , aux, value);
+        
+    printf("<reduce print string\n");
+        return buffer;
     }
-	char aux[] = "printf(\"%%s\\n\", %s);";
-   
-    char * buffer = malloc(strlen(node->variable) + strlen(aux)  /*porque el %s se reemplaza por el node->variable*/);
-    sprintf(buffer , aux, node->variable);
-     printf("<reduce print string\n");
-    return buffer;
+	
+    return 0;
 }
 
 static char * reduce_condition_state_node(node_t *n){
