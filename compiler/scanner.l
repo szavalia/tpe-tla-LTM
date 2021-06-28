@@ -35,7 +35,6 @@ spaces          \n[ \t\n\r]*
 "sub"     {return MENOS; }
 "mul"     {return POR; }
 "div"     {return DIVIDIDO; }
-"mod"     {return MODULO; }
 "["     {return ABRACKET; }
 "]"     {return CBRACKET; }
 
@@ -71,9 +70,7 @@ spaces          \n[ \t\n\r]*
 {stringregexp}    {
         int len= strlen(yytext);
         yytext[len -1] = 0;
-        printf("encontre el string: %s\n" ,yytext +1);
         strcpy(yylval.buffer , yytext+1);
-        printf("en el buffer deje %s\n: ", yylval.buffer);
         return VALSTRING;
     }
 
