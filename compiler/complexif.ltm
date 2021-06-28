@@ -1,0 +1,9 @@
+b real = t
+b unreal = f
+num numeroa = 10
+num numerob = 20
+num a
+if [ numerob gt numeroa ]
+    pi a
+    ps 'numbera is smaller'
+fi
