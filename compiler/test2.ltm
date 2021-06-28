@@ -1,0 +1,15 @@
+num imp = 6
+num outp = 1
+num cero = 0
+num uno = 1
+
+do
+
+    outp =  outp mul imp 
+    imp =  imp - uno
+w [ imp gt cero ]
+
+
+ps 'hola mundo'
+pi imp
+pi imp add 1
