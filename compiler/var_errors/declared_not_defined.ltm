@@ -1,0 +1,6 @@
+num numeroa = 10
+num numerob = 20
+num a
+if [ numerob gt numeroa ]
+    pi a
+fi
