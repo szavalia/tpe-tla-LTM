@@ -160,8 +160,8 @@ ps_state:
     ;
 
 pi_state:
-        NAME NEWLINE {$$ = (node_t *)make_print_num_node($1);}
-    |   VALNUM NEWLINE    
+        NAME NEWLINE {$$ = (node_t *)make_print_num_node(make_variable_node($1));}
+    |   expression_state NEWLINE { printf("encontre una expression\n"); $$ = make_print_num_node($1);}
     ;
 
 redefine_state:

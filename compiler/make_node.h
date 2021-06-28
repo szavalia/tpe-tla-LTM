@@ -10,7 +10,7 @@ num_node_t * make_num_node(char * num);
 
 string_node_t * make_string_node(char * string);
 
-print_num_node_t * make_print_num_node(char * variable);
+print_num_node_t * make_print_num_node(node_t * variable);
 
 print_string_node_t * make_print_string_node(node_t * variable);
 

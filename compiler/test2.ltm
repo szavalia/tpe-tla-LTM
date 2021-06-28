@@ -7,4 +7,5 @@ outp =  outp * imp
 imp =  imp - uno
 w [ imp gt cero ]
 ps 'hola mundo'
-pi outp
+pi imp
+pi imp + 1
