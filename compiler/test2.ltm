@@ -2,10 +2,14 @@ num imp = 6
 num outp = 1
 num cero = 0
 num uno = 1
+
 do
-outp =  outp * imp 
-imp =  imp - uno
+
+    outp =  outp mul imp 
+    imp =  imp - uno
 w [ imp gt cero ]
+
+
 ps 'hola mundo'
 pi imp
-pi imp + 1
+pi imp add 1
