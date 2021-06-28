@@ -73,7 +73,7 @@ static variable_type get_var_type( node_t * n){
             return BOOLEAN;
             break;
         case EXPRESSION_NODE:
-            return  NUMBER;
+            return NUMBER;
             break;
         case CONDITION_STATE_NODE:
             return BOOLEAN;
@@ -147,15 +147,25 @@ static char * reduce_boolean_node(node_t *n){
 static char * reduce_print_num_node(node_t *n){
      printf(">reduce print num\n");
 	print_num_node_t *node = (print_num_node_t *) n;
-
-    variable_type type = find_variable(node->variable);
-    if( type != NUMBER  ){
-        handle_error("(pn) Incompatible variable type, required NUMBER. caused by variable :" , node->variable);
+    char * value;
+    if ( node->variable->type == VARIABLE_NODE){
+        variable_node_t * var = (variable_node_t *) node->variable;
+        variable_type type = find_variable(var->name);    
+        if( type != NUMBER  ){
+            handle_error("(pi) Incompatible variable type, required NUMBER. caused by variable :" , var->name);
+        }    
+        value = var->name;
+    }else{
+        printf("i wanted to get the type %d but i got %d\n" , EXPRESSION_NODE , node->variable->type);
+        if ( get_var_type(node->variable) != NUMBER ){
+            handle_error("(pi) Incompatible type, requeried NUMBER" ,"");
+        }
+        value = handle_reduction(node->variable);
     }
-	char aux[] = "printf(\"%%d\\n\", %s);";
-	char * buffer = malloc( strlen(node->variable) + strlen(aux) - 2);
-	sprintf(buffer, aux, node->variable);
-    printf("<reduce print num\n");
+        char aux[] = "printf(\"%%d\\n\", %s);";
+        char * buffer = malloc( strlen(value) + strlen(aux) - 2);
+        sprintf(buffer, aux, value );
+        printf("<reduce print num\n");
 	return buffer;
 }
 

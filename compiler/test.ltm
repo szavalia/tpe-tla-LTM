@@ -1,0 +1,8 @@
+num uno = 10
+num dos = 0
+s amg = 'sus'
+do
+dos = dos add 1
+ps 'very sussy'
+ps amg
+w [ uno gt dos ]

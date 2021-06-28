@@ -47,11 +47,10 @@ node_t * make_boolean_node(char * boolean){
     return (node_t *) node;
 }
 
-node_t * make_print_num_node(char * variable){
+node_t * make_print_num_node(node_t * variable){
     print_num_node_t * node = malloc(sizeof(print_num_node_t));
     node->type = PRINT_NUM_NODE;
-    node->variable = calloc(strlen(variable)+1, sizeof(char));
-    strcpy(node->variable, variable);
+    node->variable = variable;   
     return (node_t *) node;
 }
 

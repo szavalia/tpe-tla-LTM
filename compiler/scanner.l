@@ -11,7 +11,7 @@
 stringregexp      \'[^\']*\'
 varname         [A-Za-z_]+
 valnum          [+-]?[0-9]+
-
+spaces          \n[ \t\n\r]*
 %%
 
     /*variables*/
@@ -31,11 +31,11 @@ valnum          [+-]?[0-9]+
 
     /*operadores */
 "="     {return IGUAL; }
-"+"     {return MAS; }
+"add"     {return MAS; }
 "-"     {return MENOS; }
-"*"     {return POR; }
+"mul"     {return POR; }
 "/"     {return DIVIDIDO; }
-"%"     {return MODULO; }
+"mod"     {return MODULO; }
 "["     {return ABRACKET; }
 "]"     {return CBRACKET; }
 
@@ -50,7 +50,8 @@ valnum          [+-]?[0-9]+
 "or"    {return OR; }
     /*caracteres nativos*/
 [ \t]+     /*ignore whitespace*/
-\n      { return NEWLINE; }
+
+{spaces}  { return NEWLINE; }
 
 
 
