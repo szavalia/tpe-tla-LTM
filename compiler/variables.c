@@ -48,7 +48,7 @@ int define_and_declare_variable(char * name , variable_type type){
             variables_ltm[i].type = type;
             return TRUE;
         }
-        if( strcmp(variables[i].name, name) == 0 ){
+        if( strcmp(variables_ltm[i].name, name) == 0 ){
             handle_error("Variable already defined: " , name); //error de compilacion, variable ya definida
             return FALSE;
         }
