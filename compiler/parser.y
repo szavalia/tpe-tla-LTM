@@ -197,13 +197,13 @@ logical_state:
 expression_state:
         expression_state MAS mul_state  { $$ = make_expression_node($1, $3, OP_SUM); }
     |   expression_state MENOS mul_state{ $$ = make_expression_node($1, $3, OP_SUB); }
-    |   mul_state
+    |   mul_state { $$ = $1; }
     ;
 
 mul_state:
         mul_state POR primary_state { $$ = make_expression_node($1, $3, OP_MUL); }
     |   mul_state DIVIDIDO primary_state { $$ = make_expression_node($1, $3, OP_DIV); }
-    |   primary_state
+    |   primary_state   { $$ = $1; }
     ;
 
 primary_state:
