@@ -4,12 +4,11 @@ num cero = 0
 num uno = 1
 
 do
-
     outp =  outp mul imp 
-    imp =  imp - uno
+    imp =  imp sub uno
 w [ imp gt cero ]
 
-
-ps 'hola mundo'
-pi imp
+ps 'el factorial de 6 es: '
+pi outp
+ps 'el valor de x + 1 es: '
 pi imp add 1
