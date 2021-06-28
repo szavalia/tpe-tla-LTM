@@ -1,0 +1,5 @@
+num c = 6
+num a = sub[ 2 add [ c div 2 ] mul [ 2 sub 3 ] ]
+ps '- ( 2 + (6 / 2) * (2 - 3) ) = 1'
+ps 'Acá me da: '
+pi a

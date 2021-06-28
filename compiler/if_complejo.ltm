@@ -3,6 +3,11 @@ num c = 20
 b real = t
 b unreal = f
 
+ps 'variable a'
+pi a
+ps 'variable c'
+pi c
+
 if [ [a gt c] or [unreal ne real] ]
     a = a mul 3
 fi
@@ -12,9 +17,8 @@ pi a
 ps 'variable c'
 pi c
 
-unreal = real
-
 ps 'si a es mayor que c hemos jugado con la realidad'
-if [ [a gt c] or [ unreal eq real] ]
+
+if [ [a gt c] and [real ne unreal] ]
     ps 'reality can be whatever i want'
 fi
