@@ -184,6 +184,8 @@ static char * reduce_declare_var_node(node_t * n ){
     }
     char * buffer;
     if ( node->value == 0 ){
+        printf("declarando una variable sin nada\n");
+        printf("node->name\n");
         declare_variable( node->name , node->var_type );
             char aux[] = "%s %s;";
             buffer = malloc( strlen(declaration) + 4 /* = */  + strlen(node->name) + 1 );
@@ -295,8 +297,9 @@ static char * get_expression_value(node_t * n){
             handle_error("Incompatible type in expression: ", node->name);
     }
     else{
-        handle_reduction(n);
+       return handle_reduction(n);
     }
+
     return NULL;
 }
 

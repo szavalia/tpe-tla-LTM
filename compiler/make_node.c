@@ -70,7 +70,8 @@ node_t * make_declare_var_node(char * name , node_t * value , variable_type type
     if ( value != 0 ){
         node->value = value;
     }else{
-        fprintf(stderr , "Error: expected variable and got nothing\n");
+        node->value = 0;
+       // fprintf(stderr , "Error: expected variable and got nothing\n");
     }
     return (node_t *) node;
 }

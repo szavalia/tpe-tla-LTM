@@ -22,9 +22,10 @@ int declare_variable(char * name , variable_type type){
     for(int i = 0 ; i < MAX_VARIABLES && variable == -1 ; i ++){
         if( variables_ltm[i].name == 0){
             variable = i;
-            var_count++;
             variables_ltm[i].type = type;
             variables_ltm[i].declared = TRUE;
+            variables_ltm[i].defined = FALSE;
+            variables_ltm[i].name =name;
             return TRUE;
         } 
         if( strcmp(variables_ltm[i].name, name) == 0 ){
@@ -43,7 +44,7 @@ int define_and_declare_variable(char * name , variable_type type){
             variable = i;
             var_count++;
             variables_ltm[i].name= name;
-            variables_ltm[i].declared = FALSE;
+            variables_ltm[i].declared = TRUE;
             variables_ltm[i].defined = TRUE;
             variables_ltm[i].type = type;
             return TRUE;

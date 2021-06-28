@@ -23,7 +23,7 @@ spaces          \n[ \t\n\r]*
 "ps"    {return PS; }
 "pi"    {return PI; }
 "w"     {return W; }
-"b"     {printf("boolean alert\n");return BOOL; }
+"b"     {return BOOL; }
 
     /*estados booleanos*/
 "t"     {return TRUET; }
@@ -32,9 +32,9 @@ spaces          \n[ \t\n\r]*
     /*operadores */
 "="     {return IGUAL; }
 "add"     {return MAS; }
-"-"     {return MENOS; }
+"sub"     {return MENOS; }
 "mul"     {return POR; }
-"/"     {return DIVIDIDO; }
+"div"     {return DIVIDIDO; }
 "mod"     {return MODULO; }
 "["     {return ABRACKET; }
 "]"     {return CBRACKET; }
